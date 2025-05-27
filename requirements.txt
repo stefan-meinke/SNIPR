@@ -1,0 +1,4 @@
+python>=3.12.1
+biopython>=1.85
+gffutils>=0.13
+pandas>=2.2.3
