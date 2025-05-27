@@ -5,9 +5,9 @@ A modular Python pipeline to analyze the impact of alternative splicing on codin
 
 ---
 
-## 🚀 Features
+## Features
 
-- Processes rMATS output (SE, RI, MXE, A3SS, A5SS)
+- Processes [rMATS-turbo](https://github.com/Xinglab/rmats-turbo) ([Wang et al., 2024](https://www.nature.com/articles/s41596-023-00944-2)) output (SE, RI, MXE, A3SS, A5SS)
 - Reconstructs spliced transcripts using genome FASTA + GTF
 - Simulates exon skipping or inclusion
 - Detects ORF truncation and premature stop codons (PTCs)
@@ -17,17 +17,27 @@ A modular Python pipeline to analyze the impact of alternative splicing on codin
 
 ---
 
-## 🧬 Installation
+## Running via Guix
+
+### Step 1: Launch a Guix shell
 
 ```bash
-git clone https://github.com/yourusername/splintr.git
-cd splintr
-pip install -e .
+guix shell -m manifest.scm
 ```
+
+### Step 2: Install the tool inside the Guix shell
+
+```bash
+git clone https://github.com/stefan-meinke/SPLINTR.git
+cd splintr
+pip install .
+```
+
+Now you can use the CLI command `ptc_analysis`.
 
 ---
 
-## 📁 Inputs
+## Inputs
 
 - `*.MATS.JC.txt` and `fromGTF.*.txt` from rMATS
 - Reference GTF (e.g., Ensembl)
@@ -46,28 +56,35 @@ datasets/
 
 ---
 
-## 🧪 Filtering rMATS Events
+## Filtering rMATS Events
 
-Before analysis, filter events for significance:
+Before analysis, filter events for significance (defaults: fdr < 0.01, ):
 
 ```bash
 python -m ptc_analysis.filter_rmats_events \
-  --input SE.MATS.JC.txt \
-  --output SE.MATS.JC.filtered.txt \
+  --input datasets/dataset1/SE.MATS.JC.txt \
+  --output datasets/dataset1/SE.MATS.JC.filtered.txt \
   --fdr 0.01 \
   --dpsi 0.15
 ```
 
 ---
 
-## 🔧 Usage
+## Usage
 
-### Analyze a single splice type:
+### Analyze a single splice type (e.g. skipped exon (SE) events:
+
+splice types are:
+- SE (skipped exons)
+- RI (retained introns)
+- MXE (mutually exclusive exons)
+- A3SS (alternative 3' splice site)
+- A5SS (alternative 5' splice site)
 
 ```bash
 ptc_analysis \
   --dataset_dir datasets/dataset1 \
-  --splice_type SE \
+  --splice_type SE \ 
   --output_dir results/dataset1/SE \
   --gtf reference.gtf \
   --fasta genome.fa
@@ -93,43 +110,60 @@ python run_ptc_batch.py \
   --fasta genome.fa
 ```
 
----
-
-## 📤 Output
-
-- `orf_disruption_results.csv`: per-transcript disruption and NMD prediction
-- `skipped_transcripts_log.csv`: transcripts where simulation failed
-
----
-
-## 📦 Requirements
-
-- Python ≥ 3.12.1
-- pandas
-- biopython
-- gffutils
-
-Install with:
+## Extract Sequences of Spliced Exons and 250 bp upstream and downstream
 
 ```bash
-pip install -r requirements.txt
+python extract_flanks.py \
+  --dataset datasets/dataset/SE.MATS.JC.filtered.txt \
+  --fromgtf datasets/dataset/fromGTF.SE.ftxt \
+  --genome genome.fa \
+  --splice_type SE \
+  --output spliced_exons_with_flanks.fa
 ```
 
 ---
 
-## 📄 License
+## Output
+
+- `orf_disruption_results.csv`: per-transcript disruption and NMD prediction
+- `skipped_transcripts_log.csv`: transcripts where simulation failed
+- `spliced_exons_with_flanks.fa`:
+FASTA file of flanked spliced regions
+
+---
+
+## Requirements (handled by Guix)
+
+```scheme
+(specifications->manifest
+  (list
+    "python"
+    "python-pandas"
+    "python-biopython"
+    "python-gffutils"
+    "python-setuptools"
+    "python-pip"
+    "coreutils"
+    "grep"
+    "bash"
+  ))
+```
+
+---
+
+## License
 
 MIT License
 
 ---
 
-## 🧠 Contact
+## Contact
 
-Author: Your Name  
-GitHub: [yourusername/splintr](https://github.com/yourusername/splintr)
+Author: Stefan Meinke 
+GitHub: [stefan-meinke/splintr](https://github.com/stefan-meinke/SPLINTR.git)
 
 ---
 
-## 📖 Citation
+## Citation
 
-> Your Name. SPLINTR: A tool to predict coding disruption and NMD from alternative splicing. GitHub. 2024.
+> SPLINTR: A tool to predict coding disruption and NMD from alternative splicing. GitHub. 2025.
