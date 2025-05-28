@@ -1,5 +1,5 @@
 
-# SPLINTR (Splicing-Induced Truncation and Regulation)
+# SNIPR (Splicing-Related NMD Impact and Protein Regulation)
 
 A modular Python pipeline to analyze the impact of alternative splicing on coding sequence integrity and gene expression. It simulates spliced isoforms, translates coding sequences, detects premature stop codons (PTCs), and predicts likelihood of nonsense-mediated decay (NMD).
 
@@ -28,8 +28,8 @@ guix shell -m manifest.scm
 ### Step 2: Install the tool inside the Guix shell
 
 ```bash
-git clone https://github.com/stefan-meinke/SPLINTR.git
-cd splintr
+git clone https://github.com/stefan-meinke/SNIPR.git
+cd snipr
 pip install .
 ```
 
@@ -160,10 +160,10 @@ MIT License
 ## Contact
 
 Author: Stefan Meinke 
-GitHub: [stefan-meinke/splintr](https://github.com/stefan-meinke/SPLINTR.git)
+GitHub: [stefan-meinke/snipr](https://github.com/stefan-meinke/SNIPR.git)
 
 ---
 
 ## Citation
 
-> SPLINTR: A tool to predict coding disruption and NMD from alternative splicing. GitHub. 2025.
+> SNIPR: A tool to predict coding disruption and NMD from alternative splicing. GitHub. 2025.
